@@ -68,10 +68,11 @@ export const getModels = async (options: GetModelsOptions): Promise<ModelRecord>
 				// Type safety ensures apiKey and baseUrl are always provided for litellm
 				models = await getLiteLLMModels(options.apiKey, options.baseUrl)
 				break
-			default:
+			default: {
 				// Ensures router is exhaustively checked if RouterName is a strict union
 				const exhaustiveCheck: never = provider
 				throw new Error(`Unknown provider: ${exhaustiveCheck}`)
+			}
 		}
 
 		// Cache the fetched models (even if empty, to signify a successful fetch with no models)
