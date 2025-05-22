@@ -171,6 +171,8 @@ export type ExtensionState = Pick<
 	| "customModePrompts"
 	| "customSupportPrompts"
 	| "enhancementApiConfigId"
+	| "condensingApiConfigId"
+	| "customCondensingPrompt"
 > & {
 	version: string
 	clineMessages: ClineMessage[]
