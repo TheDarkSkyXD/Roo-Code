@@ -1,6 +1,7 @@
 import axios from "axios"
 import { z } from "zod"
 
+import { isModelParameter } from "../../../schemas"
 import { ApiHandlerOptions, ModelInfo, anthropicModels, COMPUTER_USE_MODELS } from "../../../shared/api"
 import { parseApiPrice } from "../../../utils/cost"
 
@@ -38,6 +39,7 @@ export const openRouterModelSchema = modelRouterBaseModelSchema.extend({
 	id: z.string(),
 	architecture: openRouterArchitectureSchema.optional(),
 	top_provider: z.object({ max_completion_tokens: z.number().nullish() }).optional(),
+	supported_parameters: z.array(z.string()).optional(),
 })
 
 export type OpenRouterModel = z.infer<typeof openRouterModelSchema>
@@ -72,6 +74,7 @@ const openRouterModelEndpointsResponseSchema = z.object({
 		name: z.string(),
 		description: z.string().optional(),
 		architecture: openRouterArchitectureSchema.optional(),
+		supported_parameters: z.array(z.string()).optional(),
 		endpoints: z.array(openRouterModelEndpointSchema),
 	}),
 })
@@ -96,13 +99,14 @@ export async function getOpenRouterModels(options?: ApiHandlerOptions): Promise<
 		}
 
 		for (const model of data) {
-			const { id, architecture, top_provider } = model
+			const { id, architecture, top_provider, supported_parameters = [] } = model
 
 			models[id] = parseOpenRouterModel({
 				id,
 				model,
 				modality: architecture?.modality,
 				maxTokens: id.startsWith("anthropic/") ? top_provider?.max_completion_tokens : 0,
+				supportedParameters: supported_parameters,
 			})
 		}
 	} catch (error) {
@@ -162,11 +166,13 @@ export const parseOpenRouterModel = ({
 	model,
 	modality,
 	maxTokens,
+	supportedParameters,
 }: {
 	id: string
 	model: OpenRouterBaseModel
 	modality: string | null | undefined
 	maxTokens: number | null | undefined
+	supportedParameters?: string[]
 }): ModelInfo => {
 	const cacheWritesPrice = model.pricing?.input_cache_write
 		? parseApiPrice(model.pricing?.input_cache_write)
@@ -187,6 +193,7 @@ export const parseOpenRouterModel = ({
 		cacheReadsPrice,
 		description: model.description,
 		thinking: id === "anthropic/claude-3.7-sonnet:thinking",
+		supportedParameters: supportedParameters ? supportedParameters.filter(isModelParameter) : undefined,
 	}
 
 	// The OpenRouter model definition doesn't give us any hints about

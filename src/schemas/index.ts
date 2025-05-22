@@ -172,6 +172,19 @@ export const reasoningEffortsSchema = z.enum(reasoningEfforts)
 export type ReasoningEffort = z.infer<typeof reasoningEffortsSchema>
 
 /**
+ * ModelParameter
+ */
+
+export const modelParameters = ["max_tokens", "temperature", "reasoning", "include_reasoning"] as const
+
+export const modelParametersSchema = z.enum(modelParameters)
+
+export type ModelParameter = z.infer<typeof modelParametersSchema>
+
+export const isModelParameter = (value: string): value is ModelParameter =>
+	modelParameters.includes(value as ModelParameter)
+
+/**
  * ModelInfo
  */
 
@@ -187,6 +200,7 @@ export const modelInfoSchema = z.object({
 	cacheWritesPrice: z.number().optional(),
 	cacheReadsPrice: z.number().optional(),
 	description: z.string().optional(),
+	supportedParameters: z.array(modelParametersSchema).optional(),
 	reasoningEffort: reasoningEffortsSchema.optional(),
 	thinking: z.boolean().optional(),
 	minTokensPerCachePoint: z.number().optional(),

@@ -1,6 +1,6 @@
-// npx jest src/api/providers/fetchers/__tests__/openrouter.test.ts
+// npx jest api/providers/fetchers/__tests__/fetchers.test.ts
 
-import path from "path"
+import * as path from "path"
 
 import { back as nockBack } from "nock"
 
@@ -39,6 +39,77 @@ describe.skip("OpenRouter API", () => {
 				"anthropic/claude-3.7-sonnet:thinking",
 			])
 
+			expect(
+				Object.entries(models)
+					.filter(([_, model]) => model.thinking)
+					.map(([id, _]) => id)
+					.sort(),
+			).toEqual(["anthropic/claude-3.7-sonnet:thinking"])
+
+			expect(
+				Object.entries(models)
+					.filter(([_, model]) => model.supportedParameters?.includes("reasoning"))
+					.map(([id, _]) => id)
+					.sort(),
+			).toEqual([
+				"agentica-org/deepcoder-14b-preview:free",
+				"aion-labs/aion-1.0",
+				"aion-labs/aion-1.0-mini",
+				"anthropic/claude-3.7-sonnet",
+				"anthropic/claude-3.7-sonnet:beta",
+				"anthropic/claude-3.7-sonnet:thinking",
+				"anthropic/claude-opus-4",
+				"anthropic/claude-sonnet-4",
+				"arliai/qwq-32b-arliai-rpr-v1:free",
+				"cognitivecomputations/dolphin3.0-r1-mistral-24b:free",
+				"deepseek/deepseek-r1",
+				"deepseek/deepseek-r1-distill-llama-70b",
+				"deepseek/deepseek-r1-distill-llama-70b:free",
+				"deepseek/deepseek-r1-distill-llama-8b",
+				"deepseek/deepseek-r1-distill-qwen-1.5b",
+				"deepseek/deepseek-r1-distill-qwen-14b",
+				"deepseek/deepseek-r1-distill-qwen-14b:free",
+				"deepseek/deepseek-r1-distill-qwen-32b",
+				"deepseek/deepseek-r1-distill-qwen-32b:free",
+				"deepseek/deepseek-r1-zero:free",
+				"deepseek/deepseek-r1:free",
+				"google/gemini-2.5-flash-preview-05-20",
+				"google/gemini-2.5-flash-preview-05-20:thinking",
+				"microsoft/mai-ds-r1:free",
+				"microsoft/phi-4-reasoning-plus",
+				"microsoft/phi-4-reasoning-plus:free",
+				"microsoft/phi-4-reasoning:free",
+				"moonshotai/kimi-vl-a3b-thinking:free",
+				"nousresearch/deephermes-3-mistral-24b-preview:free",
+				"open-r1/olympiccoder-32b:free",
+				"openai/codex-mini",
+				"openai/o1-pro",
+				"perplexity/r1-1776",
+				"perplexity/sonar-deep-research",
+				"perplexity/sonar-reasoning",
+				"perplexity/sonar-reasoning-pro",
+				"qwen/qwen3-14b",
+				"qwen/qwen3-14b:free",
+				"qwen/qwen3-235b-a22b",
+				"qwen/qwen3-235b-a22b:free",
+				"qwen/qwen3-30b-a3b",
+				"qwen/qwen3-30b-a3b:free",
+				"qwen/qwen3-32b",
+				"qwen/qwen3-32b:free",
+				"qwen/qwen3-4b:free",
+				"qwen/qwen3-8b",
+				"qwen/qwen3-8b:free",
+				"qwen/qwq-32b",
+				"qwen/qwq-32b:free",
+				"rekaai/reka-flash-3:free",
+				"thudm/glm-z1-32b",
+				"thudm/glm-z1-32b:free",
+				"thudm/glm-z1-9b:free",
+				"thudm/glm-z1-rumination-32b",
+				"tngtech/deepseek-r1t-chimera:free",
+				"x-ai/grok-3-mini-beta",
+			])
+
 			expect(models["anthropic/claude-3.7-sonnet"]).toEqual({
 				maxTokens: 8192,
 				contextWindow: 200000,
@@ -51,6 +122,7 @@ describe.skip("OpenRouter API", () => {
 				description: expect.any(String),
 				thinking: false,
 				supportsComputerUse: true,
+				supportedParameters: ["max_tokens", "temperature", "reasoning", "include_reasoning"],
 			})
 
 			expect(models["anthropic/claude-3.7-sonnet:thinking"]).toEqual({
@@ -65,6 +137,7 @@ describe.skip("OpenRouter API", () => {
 				description: expect.any(String),
 				thinking: true,
 				supportsComputerUse: true,
+				supportedParameters: ["max_tokens", "temperature", "reasoning", "include_reasoning"],
 			})
 
 			const anthropicModels = Object.entries(models)

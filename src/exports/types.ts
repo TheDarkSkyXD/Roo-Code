@@ -279,6 +279,7 @@ type ProviderSettings = {
 				cacheWritesPrice?: number | undefined
 				cacheReadsPrice?: number | undefined
 				description?: string | undefined
+				supportedParameters?: ("max_tokens" | "temperature" | "reasoning" | "include_reasoning")[] | undefined
 				reasoningEffort?: ("low" | "medium" | "high") | undefined
 				thinking?: boolean | undefined
 				minTokensPerCachePoint?: number | undefined
@@ -692,6 +693,9 @@ type IpcMessage =
 											cacheWritesPrice?: number | undefined
 											cacheReadsPrice?: number | undefined
 											description?: string | undefined
+											supportedParameters?:
+												| ("max_tokens" | "temperature" | "reasoning" | "include_reasoning")[]
+												| undefined
 											reasoningEffort?: ("low" | "medium" | "high") | undefined
 											thinking?: boolean | undefined
 											minTokensPerCachePoint?: number | undefined
@@ -1169,6 +1173,9 @@ type TaskCommand =
 								cacheWritesPrice?: number | undefined
 								cacheReadsPrice?: number | undefined
 								description?: string | undefined
+								supportedParameters?:
+									| ("max_tokens" | "temperature" | "reasoning" | "include_reasoning")[]
+									| undefined
 								reasoningEffort?: ("low" | "medium" | "high") | undefined
 								thinking?: boolean | undefined
 								minTokensPerCachePoint?: number | undefined
