@@ -34,6 +34,9 @@ const mockGetRequestyModels = getRequestyModels as jest.MockedFunction<typeof ge
 const mockGetGlamaModels = getGlamaModels as jest.MockedFunction<typeof getGlamaModels>
 const mockGetUnboundModels = getUnboundModels as jest.MockedFunction<typeof getUnboundModels>
 
+const DUMMY_REQUESTY_KEY = "requesty-key-for-testing"
+const DUMMY_UNBOUND_KEY = "unbound-key-for-testing"
+
 describe("getModels with new GetModelsOptions", () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
@@ -88,9 +91,9 @@ describe("getModels with new GetModelsOptions", () => {
 		}
 		mockGetRequestyModels.mockResolvedValue(mockModels)
 
-		const result = await getModels({ provider: "requesty", apiKey: "requesty-key" })
+		const result = await getModels({ provider: "requesty", apiKey: DUMMY_REQUESTY_KEY })
 
-		expect(mockGetRequestyModels).toHaveBeenCalledWith("requesty-key")
+		expect(mockGetRequestyModels).toHaveBeenCalledWith(DUMMY_REQUESTY_KEY)
 		expect(result).toEqual(mockModels)
 	})
 
@@ -122,9 +125,9 @@ describe("getModels with new GetModelsOptions", () => {
 		}
 		mockGetUnboundModels.mockResolvedValue(mockModels)
 
-		const result = await getModels({ provider: "unbound", apiKey: "unbound-key" })
+		const result = await getModels({ provider: "unbound", apiKey: DUMMY_UNBOUND_KEY })
 
-		expect(mockGetUnboundModels).toHaveBeenCalledWith("unbound-key")
+		expect(mockGetUnboundModels).toHaveBeenCalledWith(DUMMY_UNBOUND_KEY)
 		expect(result).toEqual(mockModels)
 	})
 

@@ -6,6 +6,8 @@ import { COMPUTER_USE_MODELS } from "../../../../shared/api"
 jest.mock("axios")
 const mockedAxios = axios as jest.Mocked<typeof axios>
 
+const DUMMY_INVALID_KEY = "invalid-key-for-testing"
+
 describe("getLiteLLMModels", () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
@@ -165,7 +167,7 @@ describe("getLiteLLMModels", () => {
 		mockedAxios.isAxiosError.mockReturnValue(true)
 		mockedAxios.get.mockRejectedValue(axiosError)
 
-		await expect(getLiteLLMModels("invalid-key", "http://localhost:4000")).rejects.toThrow(
+		await expect(getLiteLLMModels(DUMMY_INVALID_KEY, "http://localhost:4000")).rejects.toThrow(
 			"Failed to fetch LiteLLM models: 401 Unauthorized. Check base URL and API key.",
 		)
 	})
