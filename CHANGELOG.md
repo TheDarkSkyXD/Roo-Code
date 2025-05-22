@@ -1,5 +1,11 @@
 # Roo Code Changelog
 
+## 3.18.2
+
+### Patch Changes
+
+- Fix OpenRouter names
+
 ## [3.18.1] - 2025-05-22
 
 - Add support for Claude Sonnet 4 and Claude Opus 4 models with thinking variants in Anthropic, Bedrock, and Vertex (thanks @shariqriazz!)
